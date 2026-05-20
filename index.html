@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blessed Vesak Wishing Card</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Calm Buddhist theme background - Buddha, lamps and lanterns atmosphere */
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.75)), 
+                        url('https://images.unsplash.com/photo-1609137144813-2fa071e6be12?auto=format&fit=crop&q=80&w=1920') no-repeat center center/cover;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* Glassmorphism Card Container */
+        .card-container {
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 40px 30px;
+            width: 100%;
+            max-width: 480px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            color: #ffffff;
+            position: relative;
+        }
+
+        .card-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 24px;
+            background: linear-gradient(45deg, transparent, rgba(255, 198, 10, 0.1), transparent);
+            pointer-events: none;
+        }
+
+        /* Greetings Text */
+        .sender-tag {
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #ffc60a;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-shadow: 0 2px 10px rgba(255, 198, 10, 0.3);
+        }
+
+        .sender-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 25px;
+            letter-spacing: 1px;
+        }
+
+        .vesak-title {
+            font-size: 2.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 30%, #ffdf7a 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+        }
+
+        .wishes {
+            font-size: 1.05rem;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-bottom: 35px;
+            font-weight: 300;
+        }
+
+        /* Audio Control Button */
+        .music-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            margin-bottom: 35px;
+        }
+
+        .music-btn:hover {
+            background: rgba(255, 198, 10, 0.2);
+            border-color: #ffc60a;
+        }
+
+        .music-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #ffc60a;
+            border-radius: 50%;
+        }
+
+        .music-icon.playing {
+            animation: pulse 1.2s infinite;
+        }
+
+        /* Mini Name Generator Form */
+        .input-section {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 8px;
+            max-width: 320px;
+            margin: 0 auto;
+        }
+
+        .name-input {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 8px 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .name-input:focus {
+            border-color: #ffc60a;
+        }
+
+        .gen-btn {
+            background: #ffc60a;
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .gen-btn:hover {
+            opacity: 0.9;
+        }
+
+        /* Share Buttons Section */
+        .share-section {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .share-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 650;
+            transition: transform 0.2s, cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .share-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .whatsapp {
+            background-color: #25D366;
+            color: white;
+        }
+
+        .facebook {
+            background-color: #1877F2;
+            color: white;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            50% { transform: scale(1.2); opacity: 1; }
+            100% { transform: scale(0.9); opacity: 0.6; }
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container">
+        <!-- Sender Information -->
+        <div class="sender-tag" id="senderTag">Wishing You</div>
+        <div class="sender-name" id="displayName">Friend</div>
+
+        <!-- Vesak Content -->
+        <h1 class="vesak-title">ශ්‍රී වෙසක් මංගල්‍යයක් වේවා!</h1>
+        <p class="wishes">
+            උතුම් වූ සම්බුදු තෙමඟුල නිමිත්තෙන් ඔබ සැමට සහ ඔබගේ පවුලේ සැමට සාමය, සතුට සහ පරම නිර්වාණ සුවය සැලසේවායි හදවතින්ම ප්‍රාර්ථනා කරමි!
+        </p>
+
+        <!-- Premium Music Button -->
+        <button class="music-btn" id="musicBtn">
+            <span class="music-icon" id="musicIcon"></span>
+            <span id="musicText">Play Music</span>
+        </button>
+
+        <!-- Mini Name Input Section -->
+        <div class="input-section">
+            <div class="input-group">
+                <input type="text" id="nameInput" class="name-input" placeholder="ඔයාගේ නම මෙතනට..." maxlength="25">
+                <button class="gen-btn" onclick="generateLink()">Link එක හදන්න</button>
+            </div>
+        </div>
+
+        <!-- Social Share Buttons -->
+        <div class="share-section">
+            <a href="#" id="waShare" class="share-btn whatsapp" target="_blank">
+                WhatsApp
+            </a>
+            <a href="#" id="fbShare" class="share-btn facebook" target="_blank">
+                Facebook
+            </a>
+        </div>
+    </div>
+
+    <!-- Hidden Audio Element (Calm Buddhist Instrumental) -->
+    <audio id="bgMusic" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+
+    <div class="toast" id="toast">Link එක Copy කරගත්තා! දැන් Share කරන්න.</div>
+
+    <script>
+        // Extract Name from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const senderName = urlParams.get('name');
+        const displayNameElem = document.getElementById('displayName');
+        const senderTagElem = document.getElementById('senderTag');
+
+        if (senderName && senderName.trim() !== "") {
+            displayNameElem.innerText = decodeURIComponent(senderName);
+            senderTagElem.innerText = "From";
+        } else {
+            displayNameElem.innerText = "ඔබ සැමට";
+            senderTagElem.innerText = "Happy Vesak";
+        }
+
+        // Music Player Controls
+        const music = document.getElementById('bgMusic');
+        const musicBtn = document.getElementById('musicBtn');
+        const musicIcon = document.getElementById('musicIcon');
+        const musicText = document.getElementById('musicText');
+
+        // Note: Browsers block auto-play until user interaction.
+        musicBtn.addEventListener('click', () => {
+            if (music.paused) {
+                music.play().catch(e => console.log("Audio play blocked by browser"));
+                musicText.innerText = "Pause Music";
+                musicIcon.classList.add('playing');
+            } else {
+                music.pause();
+                musicText.innerText = "Play Music";
+                musicIcon.classList.remove('playing');
+            }
+        });
+
+        // Dynamic Link Generator & Social Shares Update
+        function updateShareButtons(currentUrl) {
+            const encodedUrl = encodeURIComponent(currentUrl);
+            const text = encodeURIComponent("ඔබටත් උතුම් වූ වෙසක් මංගල්‍යයක් වේවා! මේ ලින්ක් එක බලන්න: ");
+            
+            document.getElementById('waShare').href = `https://api.whatsapp.com/send?text=${text}${encodedUrl}`;
+            document.getElementById('fbShare').href = `https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}`;
+        }
+
+        function generateLink() {
+            const nameInput = document.getElementById('nameInput').value.trim();
+            if(nameInput === "") {
+                alert("කරුණාකර ලින්ක් එක සෑදීමට නමක් ඇතුළත් කරන්න.");
+                return;
+            }
+
+            // Create new URL with name parameter
+            const baseUrl = window.location.href.split('?')[0];
+            const newUrl = `${baseUrl}?name=${encodeURIComponent(nameInput)}`;
+            
+            // Copy newly generated URL to clipboard
+            navigator.clipboard.writeText(newUrl).then(() => {
+                showToast();
+                updateShareButtons(newUrl);
+            }).catch(err => {
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.style.opacity = '1';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+            }, 3000);
+        }
+
+        // Initialize Share buttons with current active URL on load
+        updateShareButtons(window.location.href);
+    </script>
+</body>
+</html>
